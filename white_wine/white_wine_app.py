@@ -5,7 +5,7 @@ import joblib
 import pandas as pd
 import numpy as np
 
-# Let's load our saved model
+# Let's load our saved model and scaler
 model = joblib.load('best_model.pkl')
 
 scaler = joblib.load('scaler.pkl')
@@ -53,7 +53,7 @@ def wine_predict(wine:white_wine_features):
     # Scale the feature
     scaled_features = scaler.transform(features)
 
-    # Predict using ouur model
+    # Predict using our model
     prediction = model.predict(scaled_features)
 
     return {"Predicted quality": str(prediction[0])}
