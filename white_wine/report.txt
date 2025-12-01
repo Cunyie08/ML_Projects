@@ -1,0 +1,67 @@
+
+** Comprehensive EDA Report**
+
+(All recommendations are justified by the EDA results above.)
+
+1. Data Overview
+- The dataset uses of 4,898 white wine samples
+- Each wine has 11 measurements that descibe the cheemical components of the features and a quality score betwwen 3 and 9
+- No missing/invalid values found
+- 937 duplicates found in the dataset and were handles by removing them. 
+- The goal is to understand what makes our wine quality good or bad and prepare Ml model that predicts the quality of the wine
+-
+
+** What does our data tell us** 
+
+Features
+- The acidity, alcohol, PH they may or may not affect the quality of the wine. The std is low which means the there is low disparity between the datapoint.
+- The sulfur oxides may affect the quality of the wine, as they have very high variablity.
+- The features are not in the same range, hence scalig is highly recommended.
+
+Target
+- Most of the quality scores falls between 5 and 6 (Average).
+- Only a few wine scored very low (3-4) or very high (7-9)
+
+** Getting the data ready **
+- No missing values or invalid values.
+- 937 duplicated values were found and were handled by dropping.
+- All columns were numerical (no need for encoding)
+- The target variable was reclassified 
+- The features shows they are not in the same range, recommend standadizing them using MinMaxscaler to put them all in the same scale(0,1), in order for the model to learn fairly from each one.
+- We will split the data into features and target, also train and test sets.
+- After this, the data will be ready to train ML algorithm.
+
+** Training our model **
+- Created a dictionary to store the models
+- We fed the data to the model to learn and use that for prediction
+- * **Logistic Regression (multinomial)** or **LinearSVC**, to get interpretable baseline and coefficients for feature effect direction.
+- We checked the accuracy to evaluate the model to see how well it is predicting
+- Based on the accuracy result and the ratio of True Predicted to False predicted; RandomForest perfomed best
+- We recommend hyperparameter tuning to improve the model performance
+
+**Cross-validation & hyperparameter tuning**
+- Set the parameter using a list to save computational time
+- RandomSearch method was selected to as it is computationally cheap, and it also selects random parameters.
+- The model that perfomed best have these parameters - {'n_estimators': 100, 'min_samples_split': 5, 'min_samples_leaf': 2, 'max_depth': 20}
+- Cross Validation was used to check how well the model will predict unseen or new sets of data.
+- The average of the cross validation is 0.685% (estimation of the model will predict)
+
+**Summary**
+- The model overall accuracy is 79%, out of 4 samples 3 will be correctly predicted.
+- The 'Good'-quality wines is the most common: the model did well, caught most of them correctly (recall=0.84%), and was fairly accurate with its prediction (precision=0.74%)
+- The 'Average'-quality wines came second: the model did okay, caught some of them correctly (recall=0.56%), and with its prediction (precision=0.58%) 
+- Best and bad-quality wines: the classes of the samples were few; the model could not learn their patterns properly, could barely recognised any of them (0.00/0.09)
+- Save our best model and scaler for reusability
+
+
+**Business Recommendations & Value **
+This model provides actionable insights that can directly impact production consistency and profitability.
+Implement as a Digital QC Tool:
+Since the model excels at identifying "Good" wine (84% recall), it can be used on the production line. By feeding the chemical properties of a new batch into the model, you can get an instant prediction of its quality. This allows you to flag batches that may not meet the "Good" standard before bottling, saving time and resources.
+Optimize Production Levers:
+To actively improve wine quality and move more products into the "Good" and "Best" categories, the data strongly suggests the production team should focus on:
+Maximizing: alcohol content.
+Minimizing: density and volatile acidity.
+Improve "Bad" & "Best" Detection:
+To make the model effective at spotting high-profit "Best" wines or cost-saving "Bad" wines, we must gather more data on these categories. I recommend implementing a system to tag and record the chemical data for batches identified (by human tasters) as "Best" or "Bad." This will allow us to retrain and dramatically improve the model's accuracy on these valuable categories.
+This model serves as a strong foundation for data-driven quality control. By focusing on the key factors identified and improving data collection, we can further enhance its predictive power.
